@@ -1,5 +1,5 @@
 > https://kyrstr1.github.io/Disli-Cark-Hesaplama/
---
+
 > Dişli Hesaplamaları
 
 Dişli Hesaplamaları, makine imalatı, CNC, teknik resim ve makine mühendisliği alanlarında kullanılan temel dişli hesaplamalarını hızlı ve doğru bir şekilde yapabilmek için geliştirilmiş ücretsiz bir web uygulamasıdır.
