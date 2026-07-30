@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dişli Hesaplayıcı</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="bg-layer" aria-hidden="true"></div>
+
+  <div class="app">
+    <header class="header">
+      <div class="header-badge">Makine Mühendisliği</div>
+      <div class="header-content">
+        <h1>Dişli Hesaplayıcı</h1>
+        <p>Düz, helisel, konik, sonsuz vida, kremayer, zincir dişlisi ve modül hesaplamaları</p>
+      </div>
+    </header>
+
+    <nav class="tabs-wrap">
+      <div class="tabs" role="tablist">
+        <button class="tab active" data-tab="modul" role="tab" aria-selected="true">Modül</button>
+        <button class="tab" data-tab="duz" role="tab" aria-selected="false">Düz Dişli</button>
+        <button class="tab" data-tab="helisel" role="tab" aria-selected="false">Helisel</button>
+        <button class="tab" data-tab="konik" role="tab" aria-selected="false">Konik</button>
+        <button class="tab" data-tab="worm" role="tab" aria-selected="false">Sonsuz Vida</button>
+        <button class="tab" data-tab="kremayer" role="tab" aria-selected="false">Kremayer</button>
+        <button class="tab" data-tab="zincir" role="tab" aria-selected="false">Zincir Dişlisi</button>
+      </div>
+    </nav>
+
+    <main>
+      <!-- MODÜL -->
+      <section id="modul" class="panel active" role="tabpanel">
+        <div class="panel-grid">
+          <div class="card">
+            <h2>Modül Hesaplayıcı</h2>
+            <p class="card-desc">Modül, çap ve diş sayısı arasındaki temel ilişkileri hesaplayın. ISO standart dişli parametreleri.</p>
+
+            <div class="form-group">
+              <label for="modul-mode">Hesaplama Modu</label>
+              <select id="modul-mode">
+                <option value="from-mdz">Modül + Diş Sayısı → Çap</option>
+                <option value="from-dz">Çap + Diş Sayısı → Modül</option>
+                <option value="from-dm">Çap + Modül → Diş Sayısı</option>
+              </select>
+            </div>
+
+            <div class="form-group" id="modul-m-group">
+              <label for="modul-m">Modül (m)</label>
+              <div class="input-row">
+                <input type="number" id="modul-m" min="0.01" step="0.01" value="2">
+                <span class="unit">mm</span>
+              </div>
+            </div>
+
+            <div class="form-group" id="modul-z-group">
+              <label for="modul-z">Diş Sayısı (z)</label>
+              <div class="input-row">
+                <input type="number" id="modul-z" min="1" step="1" value="20">
+                <span class="unit">adet</span>
+              </div>
+            </div>
+
+            <div class="form-group" id="modul-d-group">
+              <label for="modul-d">Orta Çap (d)</label>
+              <div class="input-row">
+                <input type="number" id="modul-d" min="0.01" step="0.01" value="40">
+                <span class="unit">mm</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="modul-alpha">Basınç Açısı (α)</label>
+              <div class="input-row">
+                <input type="number" id="modul-alpha" min="1" max="45" step="0.5" value="20">
+                <span class="unit">°</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card results-card glass-glow">
+            <h2>Sonuçlar</h2>
+            <div id="modul-results" class="results-list"></div>
+            <div id="modul-error" class="error-msg" hidden></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DÜZ DİŞLİ -->
+      <section id="duz" class="panel" role="tabpanel">
+        <div class="panel-grid">
+          <div class="card">
+            <h2>Düz Dişli (Spur Gear)</h2>
+            <p class="card-desc">Involute düz dişli tüm geometrik parametreleri. ISO 53 / DIN 867 standart profil.</p>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="duz-m">Modül (m)</label>
+                <div class="input-row">
+                  <input type="number" id="duz-m" min="0.01" step="0.01" value="2">
+                  <span class="unit">mm</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="duz-z">Diş Sayısı (z)</label>
+                <div class="input-row">
+                  <input type="number" id="duz-z" min="1" step="1" value="30">
+                  <span class="unit">adet</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="duz-alpha">Basınç Açısı (α)</label>
+                <div class="input-row">
+                  <input type="number" id="duz-alpha" min="1" max="45" step="0.5" value="20">
+                  <span class="unit">°</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="duz-z2">Eş Dişli Sayısı (z₂)</label>
+                <div class="input-row">
+                  <input type="number" id="duz-z2" min="0" step="1" value="60" placeholder="isteğe bağlı">
+                  <span class="unit">adet</span>
+                </div>
+                <span class="hint">Merkez mesafesi için. Boş bırakılırsa hesaplanmaz.</span>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="duz-ha">Addendum Katsayısı</label>
+                <div class="input-row">
+                  <input type="number" id="duz-ha" min="0.5" step="0.01" value="1">
+                  <span class="unit">×m</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="duz-hf">Dedendum Katsayısı</label>
+                <div class="input-row">
+                  <input type="number" id="duz-hf" min="0.5" step="0.01" value="1.25">
+                  <span class="unit">×m</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card results-card glass-glow">
+            <h2>Sonuçlar</h2>
+            <div id="duz-results" class="results-list"></div>
+            <div id="duz-error" class="error-msg" hidden></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- HELİSEL -->
+      <section id="helisel" class="panel" role="tabpanel">
+        <div class="panel-grid">
+          <div class="card">
+            <h2>Helisel Dişli</h2>
+            <p class="card-desc">Normal modül, helis açısı ve tüm helisel dişli geometrik parametreleri.</p>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="hel-mn">Normal Modül (mn)</label>
+                <div class="input-row">
+                  <input type="number" id="hel-mn" min="0.01" step="0.01" value="2">
+                  <span class="unit">mm</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="hel-z">Diş Sayısı (z)</label>
+                <div class="input-row">
+                  <input type="number" id="hel-z" min="1" step="1" value="24">
+                  <span class="unit">adet</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="hel-beta">Helis Açısı (β)</label>
+                <div class="input-row">
+                  <input type="number" id="hel-beta" min="1" max="45" step="0.5" value="15">
+                  <span class="unit">°</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="hel-alpha">Normal Basınç Açısı (αn)</label>
+                <div class="input-row">
+                  <input type="number" id="hel-alpha" min="1" max="45" step="0.5" value="20">
+                  <span class="unit">°</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="hel-z2">Eş Dişli (z₂)</label>
+                <div class="input-row">
+                  <input type="number" id="hel-z2" min="0" step="1" value="48">
+                  <span class="unit">adet</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="hel-hand">Helis Yönü</label>
+                <select id="hel-hand">
+                  <option value="sag">Sağ (RH)</option>
+                  <option value="sol">Sol (LH)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="card results-card glass-glow">
+            <h2>Sonuçlar</h2>
+            <div id="helisel-results" class="results-list"></div>
+            <div id="helisel-error" class="error-msg" hidden></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- KONİK -->
+      <section id="konik" class="panel" role="tabpanel">
+        <div class="panel-grid">
+          <div class="card">
+            <h2>Konik Dişli (Bevel Gear)</h2>
+            <p class="card-desc">90° eksen açılı konik dişli çifti. Düz konik (straight bevel) hesaplamaları.</p>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="kon-m">Modül (m)</label>
+                <div class="input-row">
+                  <input type="number" id="kon-m" min="0.01" step="0.01" value="3">
+                  <span class="unit">mm</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="kon-alpha">Basınç Açısı (α)</label>
+                <div class="input-row">
+                  <input type="number" id="kon-alpha" min="1" max="45" step="0.5" value="20">
+                  <span class="unit">°</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="kon-z1">Küçük Dişli (z₁)</label>
+                <div class="input-row">
+                  <input type="number" id="kon-z1" min="1" step="1" value="16">
+                  <span class="unit">adet</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="kon-z2">Büyük Dişli (z₂)</label>
+                <div class="input-row">
+                  <input type="number" id="kon-z2" min="1" step="1" value="32">
+                  <span class="unit">adet</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="kon-shaft">Eksen Açısı (Σ)</label>
+              <div class="input-row">
+                <input type="number" id="kon-shaft" min="1" max="179" step="1" value="90">
+                <span class="unit">°</span>
+              </div>
+              <span class="hint">Standart konik dişlilerde genellikle 90°.</span>
+            </div>
+          </div>
+
+          <div class="card results-card glass-glow">
+            <h2>Sonuçlar</h2>
+            <div id="konik-results" class="results-list"></div>
+            <div id="konik-error" class="error-msg" hidden></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SONSUZ VİDA -->
+      <section id="worm" class="panel" role="tabpanel">
+        <div class="panel-grid">
+          <div class="card">
+            <h2>Sonsuz Vida (Worm Gear)</h2>
+            <p class="card-desc">Sonsuz vida ve dişli çarkı çifti. Merkez mesafesi, sürüklenme oranı ve vida geometrisi.</p>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="worm-m">Modül (m)</label>
+                <div class="input-row">
+                  <input type="number" id="worm-m" min="0.01" step="0.01" value="2">
+                  <span class="unit">mm</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="worm-z1">Vida Başlangıç (z₁)</label>
+                <div class="input-row">
+                  <input type="number" id="worm-z1" min="1" max="6" step="1" value="1">
+                  <span class="unit">adet</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="worm-z2">Dişli Çark Diş (z₂)</label>
+                <div class="input-row">
+                  <input type="number" id="worm-z2" min="1" step="1" value="30">
+                  <span class="unit">adet</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="worm-q">Çap Katsayısı (q)</label>
+                <div class="input-row">
+                  <input type="number" id="worm-q" min="1" step="1" value="10">
+                  <span class="unit">—</span>
+                </div>
+                <span class="hint">dw₁ = m × q. Tipik: 8–20.</span>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="worm-alpha">Basınç Açısı (α)</label>
+                <div class="input-row">
+                  <input type="number" id="worm-alpha" min="1" max="45" step="0.5" value="20">
+                  <span class="unit">°</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="worm-hand">Vida Yönü</label>
+                <select id="worm-hand">
+                  <option value="sag">Sağ (RH)</option>
+                  <option value="sol">Sol (LH)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="card results-card glass-glow">
+            <h2>Sonuçlar</h2>
+            <div id="worm-results" class="results-list"></div>
+            <div id="worm-error" class="error-msg" hidden></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- KREMAYER -->
+      <section id="kremayer" class="panel" role="tabpanel">
+        <div class="panel-grid">
+          <div class="card">
+            <h2>Kremayer (Rack)</h2>
+            <p class="card-desc">Düz dişli kremayer profili. Dişli ile eşleşen kremayer boyutları.</p>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="krem-m">Modül (m)</label>
+                <div class="input-row">
+                  <input type="number" id="krem-m" min="0.01" step="0.01" value="2">
+                  <span class="unit">mm</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="krem-alpha">Basınç Açısı (α)</label>
+                <div class="input-row">
+                  <input type="number" id="krem-alpha" min="1" max="45" step="0.5" value="20">
+                  <span class="unit">°</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="krem-length">Kremayer Uzunluğu (L)</label>
+                <div class="input-row">
+                  <input type="number" id="krem-length" min="1" step="1" value="200">
+                  <span class="unit">mm</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="krem-z">Eş Dişli Sayısı (z)</label>
+                <div class="input-row">
+                  <input type="number" id="krem-z" min="0" step="1" value="20">
+                  <span class="unit">adet</span>
+                </div>
+                <span class="hint">Merkez mesafesi için (isteğe bağlı).</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card results-card glass-glow">
+            <h2>Sonuçlar</h2>
+            <div id="kremayer-results" class="results-list"></div>
+            <div id="kremayer-error" class="error-msg" hidden></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ZİNCİR DİŞLİSİ -->
+      <section id="zincir" class="panel" role="tabpanel">
+        <div class="panel-grid">
+          <div class="card">
+            <h2>Zincir Dişlisi (Sprocket)</h2>
+            <p class="card-desc">Rulo zincir dişlisi geometrisi. Pitch, diş sayısı ve çap hesaplamaları.</p>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="zincir-pitch">Zincir Adımı (p)</label>
+                <div class="input-row">
+                  <input type="number" id="zincir-pitch" min="0.01" step="0.01" value="12.7">
+                  <span class="unit">mm</span>
+                </div>
+                <span class="hint">Örn: 08B = 12,7 mm, 06B = 9,525 mm</span>
+              </div>
+              <div class="form-group">
+                <label for="zincir-n">Diş Sayısı (N)</label>
+                <div class="input-row">
+                  <input type="number" id="zincir-n" min="4" step="1" value="19">
+                  <span class="unit">adet</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="zincir-roller">Rulo Çapı (dr)</label>
+                <div class="input-row">
+                  <input type="number" id="zincir-roller" min="0" step="0.01" value="7.75">
+                  <span class="unit">mm</span>
+                </div>
+                <span class="hint">08B için 7,75 mm. Boş bırakılabilir.</span>
+              </div>
+              <div class="form-group">
+                <label for="zincir-preset">Zincir Preseti</label>
+                <select id="zincir-preset">
+                  <option value="">Manuel</option>
+                  <option value="06B">06B (9,525 mm)</option>
+                  <option value="08B">08B (12,7 mm)</option>
+                  <option value="10B">10B (15,875 mm)</option>
+                  <option value="12B">12B (19,05 mm)</option>
+                  <option value="16B">16B (25,4 mm)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="card results-card glass-glow">
+            <h2>Sonuçlar</h2>
+            <div id="zincir-results" class="results-list"></div>
+            <div id="zincir-error" class="error-msg" hidden></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>Dişli Hesaplayıcı — Yerel olarak çalışır, veri gönderilmez. Sonuçlar yaklaşık değerlerdir; üretim öncesi katalog kontrolü yapın.</p>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
